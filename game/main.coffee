@@ -15,8 +15,8 @@ class window.Game
             speed: 0
             speed_cap: 15
             rotation: 0
-            handling: 0.7
-            acceleration: 0.2
+            handling: 0.6
+            acceleration: 0.25
             decay: 0.99
         @w = 45
         @h = 71
