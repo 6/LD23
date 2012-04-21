@@ -8,14 +8,15 @@ class window.Game
       init: ->
         console.p "Crafty.c Ship"
         @addComponent("2D, Canvas, Keyboard, spaceship")
+          .origin("center")
           .attr
             x: Crafty.viewport.width / 2.3
             y: Crafty.viewport.height / 2
             speed: 0
             speed_cap: 15
             rotation: 0
-            handling: 0.5
-            acceleration: 0.3
+            handling: 0.7
+            acceleration: 0.2
             decay: 0.99
         @w = 45
         @h = 71
