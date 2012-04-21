@@ -1,2 +1,2 @@
 #!/bin/sh
-python -m SimpleHTTPServer
+ruby dev_server.rb
