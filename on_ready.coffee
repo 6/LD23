@@ -1,0 +1,3 @@
+$ ->
+  $.deprecate
+    msie: '8'
