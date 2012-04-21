@@ -8,7 +8,9 @@ class window.Game
       init: ->
         console.p "Crafty.c Ship"
         @addComponent("2D, Canvas, Fourway, spaceship")
-          .attr(x: Crafty.viewport.width / 2.3, y: Crafty.viewport.height / 2)
+          .attr
+            x: Crafty.viewport.width / 2.3
+            y: Crafty.viewport.height / 2
           .fourway(10)
         @w = 45
         @h = 71
