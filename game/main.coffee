@@ -2,8 +2,8 @@ class window.Game
   @init: ->
     console.p "Game.init"
     Crafty.init()
-    Crafty.sprite 1, "art/spaceship.png",
-      spaceship: [0, 0, 45, 71]
+    Crafty.sprite "art/spaceship.png",
+      spaceship: [0, 0, 45, 75]
     Crafty.c "Ship",
       init: ->
         console.p "Crafty.c Ship"
@@ -19,14 +19,14 @@ class window.Game
             acceleration: 0.25
             decay: 0.99
         @w = 45
-        @h = 71
+        @h = 75
         @bind "EnterFrame", ->
           @speed += @acceleration if @isDown(Crafty.keys.UP_ARROW)
           @speed -= @acceleration if @isDown(Crafty.keys.DOWN_ARROW)
           @rotation += @speed * @handling if @isDown(Crafty.keys.RIGHT_ARROW)
           @rotation -= @speed * @handling if @isDown(Crafty.keys.LEFT_ARROW)
           @speed *= @decay
-          @speed = Math.max(-@speed_cap, Math.min(@speed_cap, @speed))
+          @speed = Math.max(0, Math.min(@speed_cap, @speed))
           @x += Math.sin(@rotation * Math.PI / 180) * @speed
           @y += Math.cos(@rotation * Math.PI / 180) * -@speed
           @x = 0 if @x > Crafty.viewport.width
