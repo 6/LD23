@@ -43,5 +43,6 @@ class window.Game
       Crafty.load ["art/spaceship.png"], ->
         Crafty.scene "Game"
       Crafty.e("2D, DOM, Text").attr({x: 20, y: 20 }).text("Loading...").textColor("#ffffff")
+      $("<div id=planet><img src='art/planet.png'></div>").appendTo("#cr-stage")
       
     Crafty.scene "Loading"
