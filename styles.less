@@ -1,9 +1,9 @@
-@blue: #ace;
-@width: 550px;
+@import "lib/preboot";
 
-body {
-  width: @width;
-  margin: 0 auto;
+@blue: #ace;
+
+html, body {
+  overflow:hidden;
 }
 
 h1 {
@@ -12,9 +12,17 @@ h1 {
 }
 
 #cr-stage {
-  border: 1px solid @blue;
+  background: #222 url('art/stars.png');
 }
 
-#controls {
-  padding: 10px 0;
+#sidebar {
+  position: fixed;
+  top:0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15,10,30, 0.6);
+  border-left: 1px solid #334;
+  color: #999;
+  padding: 0 15px;
+  .box-shadow(-5px 0 15px rgba(0,0,0,.8));
 }
