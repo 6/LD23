@@ -29,6 +29,10 @@ class window.Game
           @speed = Math.max(-@speed_cap, Math.min(@speed_cap, @speed))
           @x += Math.sin(@rotation * Math.PI / 180) * @speed
           @y += Math.cos(@rotation * Math.PI / 180) * -@speed
+          @x = 0 if @x > Crafty.viewport.width
+          @x = Crafty.viewport.width if @x < 0
+          @y = 0 if @y > Crafty.viewport.height
+          @y = Crafty.viewport.height if @y < 0
           
     Crafty.scene "Game", ->
       console.p 'Crafty.scene Game'
