@@ -196,7 +196,17 @@ class window.Game
         console.p "Done"
     Crafty.scene "Loading", ->
       console.p 'Crafty.scene Loading'
-      Crafty.load ["art/planet.png", "art/progress-bg.png", "art/progress-inner.png", "art/spaceship.png", "art/tiny-planet.png", "sound/bu-strong-and-sweet.ogg", "sound/bu-strong-and-sweet.mp3", "sound/bu-the-tense-sheep.ogg", "sound/bu-the-tense-sheep.mp3", "sound/bu-goats-and-seas.ogg", "sound/bu-goats-and-seas.mp3", "sound/Message.ogg", "sound/Message.mp3", "sound/Pickup_Coin4.ogg", "sound/Pickup_Coin4.mp3"], ->
+      Crafty.load [
+        "art/planet.png",
+        "art/progress-bg.png", "art/progress-inner.png",
+        "art/spaceship.png",
+        "art/tiny-planet.png",
+        "sound/bu-strong-and-sweet.ogg", "sound/bu-strong-and-sweet.mp3",
+        "sound/bu-the-tense-sheep.ogg", "sound/bu-the-tense-sheep.mp3",
+        "sound/bu-goats-and-seas.ogg", "sound/bu-goats-and-seas.mp3",
+        "sound/Message.ogg", "sound/Message.mp3",
+        "sound/Pickup_Coin4.ogg", "sound/Pickup_Coin4.mp3"
+      ], ->
         $("<div id=planet style='display:none'><img src='art/planet.png'></div>").appendTo("#cr-stage")
         $("#planet").fadeIn 800, ->
           Crafty.scene "Instructions"
