@@ -24,6 +24,10 @@ dialogs = (list, done_fn) ->
     dialogs list[1..], done_fn
   dialog who, text, done, list.length is 1
 
+change_level = (new_level) ->
+  console.p "Change level to #{new_level}"
+  $("#level").fadeOut(200).text("Level #{new_level}").fadeIn(200)
+
 class window.Game
   @init: ->
     console.p "Game.init"
