@@ -35,6 +35,9 @@ class window.Game
       tiny_blue: [1, 0]
       tiny_green: [2, 0]
       tiny_red: [3, 0]
+    Crafty.audio.add "intro", ["sound/bu-strong-and-sweet.ogg", "sound/bu-strong-and-sweet.mp3"]
+    Crafty.audio.add "upgrade", ["sound/bu-the-tense-sheep.ogg", "sound/bu-the-tense-sheep.mp3"]
+    Crafty.audio.add "ending", ["sound/bu-goats-and-seas.ogg", "sound/bu-goats-and-seas.mp3"]
     Crafty.c "Ship",
       init: ->
         console.p "Crafty.c Ship"
@@ -102,11 +105,14 @@ class window.Game
           
     Crafty.scene "Game", ->
       console.p 'Crafty.scene Game'
+      Crafty.audio.settings("intro", volume: 0)
+      Crafty.audio.play("upgrade", -1) # TODO only show for upgrade screen
       Crafty.e "Ship"
       Crafty.e("2D, Canvas, Tiny, tiny_#{if yes then 'purple' else 'blue'}, Collision, Tween")
 
     Crafty.scene "Instructions", ->
       console.p 'Crafty.scene Instructions'
+      Crafty.audio.play("intro", -1)
       instructs = [
         ["captain", "Listen up, Lieutenant! You're on a mission to help us colonize this new planet."]
         ,["captain", "Use the rocket ship to collect tiny planets. You can control the ship with your arrow keys."]
@@ -117,7 +123,7 @@ class window.Game
         Crafty.scene "Game"
     Crafty.scene "Loading", ->
       console.log 'Crafty.scene Loading'
-      Crafty.load ["art/spaceship.png", "art/tiny-planet.png"], ->
+      Crafty.load ["art/spaceship.png", "art/tiny-planet.png", "sound/bu-strong-and-sweet.ogg", "sound/bu-strong-and-sweet.mp3", "sound/bu-the-tense-sheep.ogg", "sound/bu-the-tense-sheep.mp3", "sound/bu-goats-and-seas.ogg", "sound/bu-goats-and-seas.mp3"], ->
         Crafty.scene "Instructions"
       Crafty.e("2D, DOM, Text").attr({x: 17, y:60 }).text("Loading...").textColor("#ffffff")
       $("<div id=planet><img src='art/planet.png'></div>").appendTo("#cr-stage")
