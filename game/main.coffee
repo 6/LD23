@@ -217,7 +217,7 @@ class window.Game
       Crafty.audio.settings("intro", volume: 0)
       #Crafty.audio.play("upgrade", -1) # TODO only show for upgrade screen
       Crafty.e "Ship"
-      for i in [0..20]
+      for i in [0..14]
         color = {0: 'purple', 1: 'blue', 2: 'green', 3: 'red'}[rand_range(0,3)]
         tiny_planets.push Crafty.e("2D, Canvas, Tiny, tiny_#{color}, Collision, Tween")
           .attr color: color
