@@ -15,15 +15,19 @@ rand_range = (min, max, round = yes) ->
   rand = min + Math.random()*(max - min)
   return if round then Math.round(rand) else rand
   
-rand_range_not_near = (min, max, not_min, not_max, round = yes) ->
-  if not not_max?
-    not_min -= 40
-    not_max = not_min + 80
-  rand = rand_range(min, max, round)
-  if rand < not_min or rand > not_max
-    return rand
+rand_location_not_near = (min_x, max_x, min_y, max_y, not_min_x, not_min_y, not_max_x, not_max_y) ->
+  if not not_max_x?
+    not_min_x -= 60
+    not_max_x = not_min_x + 120
+  if not not_max_y?
+    not_min_y -= 60
+    not_max_y = not_min_y + 120
+  rand_x = rand_range(min_x, max_x)
+  rand_y = rand_range(min_y, max_y)
+  if rand_x < not_min_x or rand_x > not_max_x or rand_y < not_min_y or rand_y > not_max_y
+    return [rand_x, rand_y]
   else
-    return rand_range_not_near(min, max, not_min, not_max, round)
+    return rand_location_not_near(min_x, max_x, min_y, max_y, not_min_x, not_min_y, not_max_x, not_max_y)
 
 dialog = (who, text, done_fn, close = no) ->
   data =
@@ -144,9 +148,10 @@ class window.Game
         @w = 35
         @h = 35
         @origin("center")
+        [x, y] = rand_location_not_near(40, Crafty.viewport.width - 40, 40, Crafty.viewport.height - 40, Crafty.viewport.width / 2 - 45 / 2, Crafty.viewport.height / 2 - 75 / 2 - 170)
         @attr
-          x: rand_range_not_near(40, Crafty.viewport.width - 40, Crafty.viewport.width / 2 - 45 / 2)
-          y: rand_range_not_near(40, Crafty.viewport.height   - 40, Crafty.viewport.height / 2 - 75 / 2 - 170)
+          x: x
+          y: y
           is_hit: no
           rotation_speed: rand_range(1, 3)
         .bind "EnterFrame", (data) ->
