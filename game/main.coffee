@@ -109,9 +109,9 @@ class window.Game
     Crafty.scene "Game", ->
       console.p 'Crafty.scene Game'
       $("<div id='progress-wrap' style='display:none'><div id=level>Level 1</div><div id=progress><div id='progress-inner'></div></div></div>").appendTo("#planet")
-      $("#progress-wrap").fadeIn 800, ->
-        $("#progress-inner").animate width: "+=50%", 200, ->
-          $("#progress-inner").animate(width: "-=100%", 500)
+      $("#progress-wrap").fadeIn 600
+      $("#progress-inner").animate width: "100%", 300, ->
+        $("#progress-inner").animate(width: "-=100%", 500)
       Crafty.audio.settings("intro", volume: 0)
       #Crafty.audio.play("upgrade", -1) # TODO only show for upgrade screen
       Crafty.e "Ship"
@@ -130,9 +130,10 @@ class window.Game
       Crafty.scene "Game"
     Crafty.scene "Loading", ->
       console.log 'Crafty.scene Loading'
-      Crafty.load ["art/spaceship.png", "art/tiny-planet.png", "sound/bu-strong-and-sweet.ogg", "sound/bu-strong-and-sweet.mp3", "sound/bu-the-tense-sheep.ogg", "sound/bu-the-tense-sheep.mp3", "sound/bu-goats-and-seas.ogg", "sound/bu-goats-and-seas.mp3", "sound/Message.ogg", "sound/Message.mp3", "sound/Pickup_Coin4.ogg", "sound/Pickup_Coin4.mp3"], ->
-        Crafty.scene "Instructions"
+      Crafty.load ["art/planet.png", "art/progress-bg.png", "art/progress-inner.png", "art/spaceship.png", "art/tiny-planet.png", "sound/bu-strong-and-sweet.ogg", "sound/bu-strong-and-sweet.mp3", "sound/bu-the-tense-sheep.ogg", "sound/bu-the-tense-sheep.mp3", "sound/bu-goats-and-seas.ogg", "sound/bu-goats-and-seas.mp3", "sound/Message.ogg", "sound/Message.mp3", "sound/Pickup_Coin4.ogg", "sound/Pickup_Coin4.mp3"], ->
+        $("<div id=planet style='display:none'><img src='art/planet.png'></div>").appendTo("#cr-stage")
+        $("#planet").fadeIn 800, ->
+          Crafty.scene "Instructions"
       Crafty.e("2D, DOM, Text").attr({x: 17, y:60 }).text("Loading...").textColor("#ffffff")
-      $("<div id=planet><img src='art/planet.png'></div>").appendTo("#cr-stage")
       
     Crafty.scene "Loading"
