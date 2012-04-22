@@ -8,13 +8,17 @@
 <script src="lib/crafty.js"></script>
 <script src="lib/coffeescript.js"></script>
 <script src="lib/less.js"></script>
+<script src="lib/icanhaz.min.js"></script>
 <script src="lib/jqModal.js"></script>
 <script src="lib/browser_deprecator.js"></script>
 <script type="text/coffeescript" src="util.coffee"></script>
 <script type="text/coffeescript" src="game/main.coffee"></script>
 <script type="text/coffeescript" src="on_ready.coffee"></script>
 <div id="cr-stage"></div>
-<div id="sidebar">
-  <p><img src="art/logo.png" alt="Tiny World"></p>
-  Controls: TODO
-</div>
+<img id="logo" src="art/logo.png" alt="Tiny World">
+<div id="dialog"></div>
+<script id="dialog" type="text/html">
+  <img id="who" src="{{icon}}">
+  <p id="text">{{text}}</p>
+  <button id="confirm">Confirm</button>
+</script>

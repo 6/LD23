@@ -1,3 +1,9 @@
+dialog = (who, text, done_fn) ->
+  data =
+    icon: "art/#{who}.png"
+    text: text
+  ich.dialog(data).appendTo("#dialog")
+
 class window.Game
   @init: ->
     console.p "Game.init"
@@ -15,8 +21,8 @@ class window.Game
         @addComponent("2D, Canvas, Keyboard, spaceship")
           .origin("center")
           .attr
-            x: Crafty.viewport.width / 2.3
-            y: Crafty.viewport.height / 2
+            x: Crafty.viewport.width / 2 - 45 / 2
+            y: Crafty.viewport.height / 2 - 75 / 2
             speed: 0
             speed_cap: 15
             rotation: 0
@@ -68,12 +74,14 @@ class window.Game
       console.p 'Crafty.scene Game'
       Crafty.e "Ship"
       Crafty.e("2D, Canvas, Tiny, tiny_#{if yes then 'purple' else 'blue'}, Collision")
-      
+    Crafty.scene "Instructions", ->
+      console.p 'Crafty.scene Instructions'
+      dialog "captain", "Listen up, Lieutenant! You're on a mission to help us colonize this new planet."
     Crafty.scene "Loading", ->
       console.log 'Crafty.scene Loading'
       Crafty.load ["art/spaceship.png", "art/tiny-planet.png"], ->
-        Crafty.scene "Game"
-      Crafty.e("2D, DOM, Text").attr({x: 20, y: 20 }).text("Loading...").textColor("#ffffff")
+        Crafty.scene "Instructions"
+      Crafty.e("2D, DOM, Text").attr({x: 17, y:60 }).text("Loading...").textColor("#ffffff")
       $("<div id=planet><img src='art/planet.png'></div>").appendTo("#cr-stage")
       
     Crafty.scene "Loading"
