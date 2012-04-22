@@ -193,9 +193,9 @@ class window.Game
         ,["captain", "Use the rocket ship to collect tiny planets. You can control the ship with your arrow keys."]
         ,["lieutenant", "Aye-aye sir! Just use the arrow keys to control the ship. Gotcha."]
       ]
-      #dialogs instructs, ->
-      #  console.p "Done instructing"
-      Crafty.scene "Game"
+      dialogs instructs, ->
+        console.p "Done instructing"
+        Crafty.scene "Game"
 
     Crafty.scene "End", ->
       console.p 'Crafty.scene End'
