@@ -37,6 +37,14 @@ dialogs = (list, done_fn) ->
     dialogs list[1..], done_fn
   dialog who, text, done, list.length is 1
 
+fade_audio = (ident, i, delay = 500, start_volume = 1) ->
+  i ?= start_volume * 10
+  Crafty.audio.settings ident, volume: (i - 1)/(start_volume*10)
+  return if i - 1 <= 0
+  setTimeout ->
+    fade_audio ident, i - 1, delay, start_volume
+  , delay
+
 get_level = ->
   parseInt($("#level").text().split(" ")[1])
 
@@ -200,6 +208,7 @@ class window.Game
       ]
       dialogs instructs, ->
         console.p "Done"
+        fade_audio "ending"
 
     Crafty.scene "Loading", ->
       console.p 'Crafty.scene Loading'
