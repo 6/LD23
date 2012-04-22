@@ -1,3 +1,6 @@
+progress_queue = []
+progress_in_action = no
+
 rand_range = (min, max, round = yes) ->
   rand = min + Math.random()*(max - min)
   return if round then Math.round(rand) else rand
@@ -30,9 +33,6 @@ get_level = ->
 change_level = (new_level) ->
   console.p "Change level to #{new_level}"
   $("#level").fadeOut(200).text("Level #{new_level}").fadeIn(200)
-
-progress_queue = []
-progress_in_action = no
 
 check_progress_queue = ->
   return if progress_in_action or progress_queue.length is 0
