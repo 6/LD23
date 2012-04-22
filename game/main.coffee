@@ -121,9 +121,9 @@ class window.Game
         ,["captain", "Use the rocket ship to collect tiny planets. You can control the ship with your arrow keys."]
         ,["lieutenant", "Aye-aye sir! Just use the arrow keys to control the ship. Gotcha."]
       ]
-      dialogs instructs, ->
-        console.p "Done instructing"
-        Crafty.scene "Game"
+      #dialogs instructs, ->
+      #  console.p "Done instructing"
+      Crafty.scene "Game"
     Crafty.scene "Loading", ->
       console.log 'Crafty.scene Loading'
       Crafty.load ["art/spaceship.png", "art/tiny-planet.png", "sound/bu-strong-and-sweet.ogg", "sound/bu-strong-and-sweet.mp3", "sound/bu-the-tense-sheep.ogg", "sound/bu-the-tense-sheep.mp3", "sound/bu-goats-and-seas.ogg", "sound/bu-goats-and-seas.mp3", "sound/Message.ogg", "sound/Message.mp3", "sound/Pickup_Coin4.ogg", "sound/Pickup_Coin4.mp3"], ->
