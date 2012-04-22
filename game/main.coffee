@@ -2,11 +2,23 @@ dialog = (who, text, done_fn, close = no) ->
   data =
     icon: "art/#{who}.png"
     text: text
-  $("#dialog").html ich.dialog(data)
-  $("#dialog").animate(bottom: "+=135px", 300)
-  $("#dialog > #confirm").click ->
+  html = ich.dialog(data)
+  on_confirm = ->
     $("#dialog").animate(bottom: "-=135px", 300) if close
     done_fn() if done_fn?
+  if $("#dialog").css("bottom") is "-120px"
+    $("#dialog").html(html).animate(bottom: "+=135px", 300)
+    $("#dialog > #confirm").click on_confirm
+  else
+    $("#dialog").fadeOut 150, ->
+      $("#dialog").html(html).fadeIn(150)
+      $("#dialog > #confirm").click on_confirm
+
+dialogs = (list, done_fn) ->
+  [who, text] = list[0]
+  done = if list.length is 1 then done_fn else ->
+    dialogs list[1..], done_fn
+  dialog who, text, done, list.length is 1
 
 class window.Game
   @init: ->
@@ -78,9 +90,17 @@ class window.Game
       console.p 'Crafty.scene Game'
       Crafty.e "Ship"
       Crafty.e("2D, Canvas, Tiny, tiny_#{if yes then 'purple' else 'blue'}, Collision")
+
     Crafty.scene "Instructions", ->
       console.p 'Crafty.scene Instructions'
-      dialog "captain", "Listen up, Lieutenant! You're on a mission to help us colonize this new planet.", null, yes
+      instructs = [
+        ["captain", "Listen up, Lieutenant! You're on a mission to help us colonize this new planet."]
+        ,["captain", "Use the rocket ship to collect tiny planets. You can control the ship with your arrow keys."]
+        ,["lieutenant", "Aye-aye sir! Just use the arrow keys to control the ship. Gotcha."]
+      ]
+      dialogs instructs, ->
+        console.p "Done instructing"
+        Crafty.scene "Game"
     Crafty.scene "Loading", ->
       console.log 'Crafty.scene Loading'
       Crafty.load ["art/spaceship.png", "art/tiny-planet.png"], ->
