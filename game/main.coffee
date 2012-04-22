@@ -88,6 +88,10 @@ class window.Game
               x: @x + rand_range(-5, 5)
               y: @y + rand_range(-5, 5)
             , 150)
+          @x = 0 if @x > Crafty.viewport.width
+          @x = Crafty.viewport.width if @x < 0
+          @y = 0 if @y > Crafty.viewport.height
+          @y = Crafty.viewport.height if @y < 0
           collision = @hit "Ship"
           @after_hit(collision[0]) if collision and not @is_hit is yes
       after_hit: (ship) ->
