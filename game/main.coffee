@@ -1,8 +1,12 @@
-dialog = (who, text, done_fn) ->
+dialog = (who, text, done_fn, close = no) ->
   data =
     icon: "art/#{who}.png"
     text: text
-  ich.dialog(data).appendTo("#dialog")
+  $("#dialog").html ich.dialog(data)
+  $("#dialog").animate(bottom: "+=135px", 300)
+  $("#dialog > #confirm").click ->
+    $("#dialog").animate(bottom: "-=135px", 300) if close
+    done_fn() if done_fn?
 
 class window.Game
   @init: ->
@@ -76,7 +80,7 @@ class window.Game
       Crafty.e("2D, Canvas, Tiny, tiny_#{if yes then 'purple' else 'blue'}, Collision")
     Crafty.scene "Instructions", ->
       console.p 'Crafty.scene Instructions'
-      dialog "captain", "Listen up, Lieutenant! You're on a mission to help us colonize this new planet."
+      dialog "captain", "Listen up, Lieutenant! You're on a mission to help us colonize this new planet.", null, yes
     Crafty.scene "Loading", ->
       console.log 'Crafty.scene Loading'
       Crafty.load ["art/spaceship.png", "art/tiny-planet.png"], ->
