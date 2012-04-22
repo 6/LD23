@@ -24,9 +24,39 @@ dialogs = (list, done_fn) ->
     dialogs list[1..], done_fn
   dialog who, text, done, list.length is 1
 
+get_level = ->
+  parseInt($("#level").text().split(" ")[1])
+
 change_level = (new_level) ->
   console.p "Change level to #{new_level}"
   $("#level").fadeOut(200).text("Level #{new_level}").fadeIn(200)
+
+progress_queue = []
+progress_in_action = no
+
+check_progress_queue = ->
+  return if progress_in_action or progress_queue.length is 0
+  add_progress(progress_queue.splice(0, 1))
+  
+enqueue_progress = (amount) ->
+  progress_queue.push(amount)
+
+add_progress = (amount) ->
+  progress_in_action = yes
+  level = get_level()
+  progress_change = amount / (level / 2)
+  progress = parseInt($("#progress-inner").css("width"))
+  if progress + progress_change >= 192 # level up
+    level += 1
+    change_level(level)
+    $("#progress-inner").animate width: "100%", 50, ->
+      $("#progress-inner").css("width", "0%")
+      progress_change = progress + progress_change - 192 #TODO
+      $("#progress-inner").animate width: "#{progress_change}px", 100, ->
+        progress_in_action = no
+  else
+    $("#progress-inner").animate width: "#{progress + progress_change}px", 100, ->
+      progress_in_action = no
 
 class window.Game
   @init: ->
@@ -73,6 +103,7 @@ class window.Game
           @x = Crafty.viewport.width if @x < 0
           @y = 0 if @y > Crafty.viewport.height
           @y = Crafty.viewport.height if @y < 0
+          check_progress_queue()
     Crafty.c "Tiny",
       init: ->
         console.p "Crafty.c Tiny"
@@ -106,6 +137,7 @@ class window.Game
         console.p "Ship hit Tiny planet!"
         Crafty.audio.settings("tiny", volume: 0.1)
         Crafty.audio.play("tiny")
+        enqueue_progress(10)
         @attr
           is_hit: true
           frames_left: 30
@@ -113,9 +145,11 @@ class window.Game
     Crafty.scene "Game", ->
       console.p 'Crafty.scene Game'
       $("<div id='progress-wrap' style='display:none'><div id=level>Level 1</div><div id=progress><div id='progress-inner'></div></div></div>").appendTo("#planet")
+      progress_in_action = yes
       $("#progress-wrap").fadeIn 600
       $("#progress-inner").animate width: "100%", 300, ->
-        $("#progress-inner").animate(width: "-=100%", 500)
+        $("#progress-inner").animate width: "-=100%", 500, ->
+          progress_in_action = no
       Crafty.audio.settings("intro", volume: 0)
       #Crafty.audio.play("upgrade", -1) # TODO only show for upgrade screen
       Crafty.e "Ship"
