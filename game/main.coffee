@@ -108,7 +108,10 @@ class window.Game
           
     Crafty.scene "Game", ->
       console.p 'Crafty.scene Game'
-      $("<div id='progress-wrap'><div id=level>Level 1</div><div id=progress><div id='progress-inner'></div></div></div>").appendTo("#planet")
+      $("<div id='progress-wrap' style='display:none'><div id=level>Level 1</div><div id=progress><div id='progress-inner'></div></div></div>").appendTo("#planet")
+      $("#progress-wrap").fadeIn 800, ->
+        $("#progress-inner").animate width: "+=50%", 200, ->
+          $("#progress-inner").animate(width: "-=100%", 500)
       Crafty.audio.settings("intro", volume: 0)
       #Crafty.audio.play("upgrade", -1) # TODO only show for upgrade screen
       Crafty.e "Ship"
