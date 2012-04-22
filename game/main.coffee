@@ -46,7 +46,8 @@ class window.Game
             speed: 0
             speed_cap: 15
             rotation: 0
-            handling: 0.6
+            rotation_cap: 6
+            handling: 0.4
             acceleration: 0.25
             decay: 0.99
         @w = 45
@@ -54,8 +55,8 @@ class window.Game
         @bind "EnterFrame", ->
           @speed += @acceleration if @isDown(Crafty.keys.UP_ARROW)
           @speed -= @acceleration if @isDown(Crafty.keys.DOWN_ARROW)
-          @rotation += @speed * @handling if @isDown(Crafty.keys.RIGHT_ARROW)
-          @rotation -= @speed * @handling if @isDown(Crafty.keys.LEFT_ARROW)
+          @rotation += Math.min(@rotation_cap, @speed * @handling + 2) if @isDown(Crafty.keys.RIGHT_ARROW)
+          @rotation -= Math.min(@rotation_cap, @speed * @handling + 2) if @isDown(Crafty.keys.LEFT_ARROW)
           @speed *= @decay
           @speed = Math.max(-@speed_cap, Math.min(@speed_cap, @speed))
           @x += Math.sin(@rotation * Math.PI / 180) * @speed
