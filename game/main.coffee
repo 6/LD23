@@ -209,6 +209,12 @@ class window.Game
       dialogs instructs, ->
         console.p "Done"
         fade_audio "ending"
+        $("#planet").fadeOut(3000)
+        $("<div id=end style='display:none'>
+             <h2>Game over</h2>
+             <a href='/'>Replay?</a>
+           </div>").appendTo("#cr-stage")
+        $("#end").fadeIn(3000)
 
     Crafty.scene "Loading", ->
       console.p 'Crafty.scene Loading'
