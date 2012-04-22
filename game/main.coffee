@@ -42,7 +42,7 @@ class window.Game
           .origin("center")
           .attr
             x: Crafty.viewport.width / 2 - 45 / 2
-            y: Crafty.viewport.height / 2 - 75 / 2
+            y: Crafty.viewport.height / 2 - 75 / 2 - 170
             speed: 0
             speed_cap: 15
             rotation: 0
