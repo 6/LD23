@@ -189,7 +189,7 @@ class window.Game
       Crafty.audio.play("ending", -1)
       instructs = [
         ["captain", "Well done, Lieutenant. With your help, the planet is now in tip-top shape!"]
-        ,["captain", "Your final score is... #{Math.max(1000, 2000 - final_time) + rand_range(1, 50)}! Congratulations!"]
+        ,["captain", "Your final score is... #{Math.max(1000, 1900 - final_time) + rand_range(1, 50)}! Congratulations!"]
         ,["lieutenant", "Wahoo!! Yeah!"]
       ]
       dialogs instructs, ->
