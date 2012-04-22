@@ -38,6 +38,7 @@ class window.Game
     Crafty.audio.add "intro", ["sound/bu-strong-and-sweet.ogg", "sound/bu-strong-and-sweet.mp3"]
     Crafty.audio.add "upgrade", ["sound/bu-the-tense-sheep.ogg", "sound/bu-the-tense-sheep.mp3"]
     Crafty.audio.add "ending", ["sound/bu-goats-and-seas.ogg", "sound/bu-goats-and-seas.mp3"]
+    Crafty.audio.add "tiny", ["sound/Pickup_Coin4.ogg", "sound/Pickup_Coin4.mp3"]
     Crafty.c "Ship",
       init: ->
         console.p "Crafty.c Ship"
@@ -99,6 +100,8 @@ class window.Game
           @after_hit(collision[0]) if collision and not @is_hit is yes
       after_hit: (ship) ->
         console.p "Ship hit Tiny planet!"
+        Crafty.audio.settings("tiny", volume: 0.3)
+        Crafty.audio.play("tiny")
         @attr
           is_hit: true
           frames_left: 30
@@ -106,7 +109,7 @@ class window.Game
     Crafty.scene "Game", ->
       console.p 'Crafty.scene Game'
       Crafty.audio.settings("intro", volume: 0)
-      Crafty.audio.play("upgrade", -1) # TODO only show for upgrade screen
+      #Crafty.audio.play("upgrade", -1) # TODO only show for upgrade screen
       Crafty.e "Ship"
       Crafty.e("2D, Canvas, Tiny, tiny_#{if yes then 'purple' else 'blue'}, Collision, Tween")
 
@@ -123,7 +126,7 @@ class window.Game
         Crafty.scene "Game"
     Crafty.scene "Loading", ->
       console.log 'Crafty.scene Loading'
-      Crafty.load ["art/spaceship.png", "art/tiny-planet.png", "sound/bu-strong-and-sweet.ogg", "sound/bu-strong-and-sweet.mp3", "sound/bu-the-tense-sheep.ogg", "sound/bu-the-tense-sheep.mp3", "sound/bu-goats-and-seas.ogg", "sound/bu-goats-and-seas.mp3"], ->
+      Crafty.load ["art/spaceship.png", "art/tiny-planet.png", "sound/bu-strong-and-sweet.ogg", "sound/bu-strong-and-sweet.mp3", "sound/bu-the-tense-sheep.ogg", "sound/bu-the-tense-sheep.mp3", "sound/bu-goats-and-seas.ogg", "sound/bu-goats-and-seas.mp3", "sound/Message.ogg", "sound/Message.mp3", "sound/Pickup_Coin4.ogg", "sound/Pickup_Coin4.mp3"], ->
         Crafty.scene "Instructions"
       Crafty.e("2D, DOM, Text").attr({x: 17, y:60 }).text("Loading...").textColor("#ffffff")
       $("<div id=planet><img src='art/planet.png'></div>").appendTo("#cr-stage")
