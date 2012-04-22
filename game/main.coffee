@@ -166,8 +166,18 @@ class window.Game
           x: x
           y: y
           is_hit: no
+          first_frame: yes
           rotation_speed: rand_range(1, 3)
         .bind "EnterFrame", (data) ->
+          if @first_frame is yes
+            @first_frame = no
+            ranges =
+              purple: [-1, 1]
+              blue: [-2, 2]
+              red: [-4, 4]
+              green: [-8, 8]
+            @speed_x = rand_range(ranges[@color][0], ranges[@color][1])
+            @speed_y = rand_range(ranges[@color][0], ranges[@color][1])
           if @is_hit is yes
             @rotation += 30
             @frames_left -= 1
@@ -175,11 +185,8 @@ class window.Game
             @destroy() if @frames_left <= 0
           else
             @rotation += @rotation_speed
-          if data.frame % 150 is 0
-            @tween(
-              x: @x + rand_range(-5, 5)
-              y: @y + rand_range(-5, 5)
-            , 150)
+          @x += @speed_x
+          @y += @speed_y
           @x = 0 if @x > Crafty.viewport.width
           @x = Crafty.viewport.width if @x < 0
           @y = 0 if @y > Crafty.viewport.height
