@@ -138,6 +138,7 @@ class window.Game
           x: rand_range(40, Crafty.viewport.width - 40)
           y: rand_range(40, Crafty.viewport.height   - 40)
           is_hit: no
+          rotation_speed: rand_range(1, 3)
         .bind "EnterFrame", (data) ->
           if @is_hit is yes
             @rotation += 30
@@ -145,7 +146,7 @@ class window.Game
             @alpha = Math.max(0, @frames_left) / 50
             @destroy() if @frames_left <= 0
           else
-            @rotation += 1
+            @rotation += @rotation_speed
           if data.frame % 150 is 0
             @tween(
               x: @x + rand_range(-5, 5)
