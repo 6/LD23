@@ -35,11 +35,14 @@ rand_location_not_near = (min_x, max_x, min_y, max_y, not_min_x, not_min_y, not_
   else
     return rand_location_not_near(min_x, max_x, min_y, max_y, not_min_x, not_min_y, not_max_x, not_max_y)
 
+tmpl = (selector, data = {}) ->
+  _.template($(selector).html())(data)
+
 dialog = (who, text, done_fn, close = no) ->
   data =
     icon: "art/#{who}.png"
     text: text
-  html = ich.dialog(data)
+  html = tmpl("#dialog-tmpl", data)
   on_confirm = ->
     $("#dialog").animate(bottom: "-=135px", 300) if close
     done_fn() if done_fn?

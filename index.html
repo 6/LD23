@@ -8,7 +8,7 @@
 <script src="lib/crafty.js"></script>
 <script src="lib/coffeescript.js"></script>
 <script src="lib/less.js"></script>
-<script src="lib/icanhaz.min.js"></script>
+<script src="lib/underscore.js"></script>
 <script src="lib/jqModal.js"></script>
 <script src="lib/browser_deprecator.js"></script>
 <script src="util.js"></script>
@@ -17,8 +17,9 @@
 <div id="cr-stage"></div>
 <img id="logo" src="art/logo.png" alt="Tiny World">
 <div id="dialog"></div>
-<script id="dialog" type="text/html">
-  <img id="who" src="{{icon}}">
-  <p id="text">{{text}}</p>
+<div id="store"></div>
+<script id="dialog-tmpl" type="text/html">
+  <img id="who" src="<%= icon %>">
+  <p id="text"><%= text %></p>
   <button id="confirm">Confirm</button>
 </script>
