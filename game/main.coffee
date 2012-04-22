@@ -57,7 +57,7 @@ class window.Game
           @rotation += @speed * @handling if @isDown(Crafty.keys.RIGHT_ARROW)
           @rotation -= @speed * @handling if @isDown(Crafty.keys.LEFT_ARROW)
           @speed *= @decay
-          @speed = Math.max(0, Math.min(@speed_cap, @speed))
+          @speed = Math.max(-@speed_cap, Math.min(@speed_cap, @speed))
           @x += Math.sin(@rotation * Math.PI / 180) * @speed
           @y += Math.cos(@rotation * Math.PI / 180) * -@speed
           @x = 0 if @x > Crafty.viewport.width
