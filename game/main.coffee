@@ -202,7 +202,7 @@ class window.Game
 
     Crafty.scene "Instructions", ->
       console.p 'Crafty.scene Instructions'
-      Crafty.audio.play("intro", -1)
+      #Crafty.audio.play("intro", -1)
       instructs = [
         ["captain", "Listen up, Lieutenant! You're on a mission to help us colonize this new planet."]
         ,["captain", "Use the rocket ship to collect tiny planets. You can control the ship with your arrow keys."]
