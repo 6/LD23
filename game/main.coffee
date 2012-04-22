@@ -14,6 +14,16 @@ tick_tock = -> # run every frame
 rand_range = (min, max, round = yes) ->
   rand = min + Math.random()*(max - min)
   return if round then Math.round(rand) else rand
+  
+rand_range_not_near = (min, max, not_min, not_max, round = yes) ->
+  if not not_max?
+    not_min -= 40
+    not_max = not_min + 80
+  rand = rand_range(min, max, round)
+  if rand < not_min or rand > not_max
+    return rand
+  else
+    return rand_range_not_near(min, max, not_min, not_max, round)
 
 dialog = (who, text, done_fn, close = no) ->
   data =
@@ -135,8 +145,8 @@ class window.Game
         @h = 35
         @origin("center")
         @attr
-          x: rand_range(40, Crafty.viewport.width - 40)
-          y: rand_range(40, Crafty.viewport.height   - 40)
+          x: rand_range_not_near(40, Crafty.viewport.width - 40, Crafty.viewport.width / 2 - 45 / 2)
+          y: rand_range_not_near(40, Crafty.viewport.height   - 40, Crafty.viewport.height / 2 - 75 / 2 - 170)
           is_hit: no
           rotation_speed: rand_range(1, 3)
         .bind "EnterFrame", (data) ->
