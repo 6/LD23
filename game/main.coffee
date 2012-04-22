@@ -2,6 +2,8 @@ progress_queue = []
 progress_in_action = no
 time = 0
 temp_time = 1
+has_upgrade_instructions = no
+tiny_planets = []
 
 tick_tock = -> # run every frame
   temp_time += 1
@@ -10,6 +12,10 @@ tick_tock = -> # run every frame
     time += 1
   check_progress_queue()
   check_game_done()
+  if get_level() >= 2 and not has_upgrade_instructions
+    has_upgrade_instructions = yes
+    destroy_all_tiny ->
+      Crafty.scene "Level2"
 
 rand_range = (min, max, round = yes) ->
   rand = min + Math.random()*(max - min)
@@ -93,6 +99,12 @@ add_progress = (amount) ->
 check_game_done = ->
   return if get_level() < 5
   Crafty.scene "End"
+  
+destroy_all_tiny = (done_fn) ->
+  for tiny in tiny_planets
+    tiny.after_hit()
+  tiny_planets = []
+  setTimeout done_fn, 200 if done_fn?
 
 class window.Game
   @init: ->
@@ -174,10 +186,11 @@ class window.Game
           collision = @hit "Ship"
           @after_hit(collision[0]) if collision and not @is_hit is yes
       after_hit: (ship) ->
-        console.p "Ship hit Tiny planet!"
-        Crafty.audio.settings("tiny", volume: 0.1)
-        Crafty.audio.play("tiny")
-        enqueue_progress(10)
+        if ship?
+          console.p "Ship hit Tiny planet!"
+          Crafty.audio.settings("tiny", volume: 0.1)
+          Crafty.audio.play("tiny")
+          enqueue_progress(10)
         @attr
           is_hit: true
           frames_left: 30
@@ -196,9 +209,21 @@ class window.Game
       Crafty.audio.settings("intro", volume: 0)
       #Crafty.audio.play("upgrade", -1) # TODO only show for upgrade screen
       Crafty.e "Ship"
-      for i in [0..100]
+      for i in [0..20]
         color = {0: 'purple', 1: 'blue', 2: 'green', 3: 'red'}[rand_range(0,3)]
-        Crafty.e("2D, Canvas, Tiny, tiny_#{color}, Collision, Tween")
+        tiny_planets.push Crafty.e("2D, Canvas, Tiny, tiny_#{color}, Collision, Tween")
+          .attr color: color
+    
+    Crafty.scene "Level2", ->
+      console.p "Crafty.scene Level2"
+      instructions = [
+        ["captain", "Great work, soldier! Thanks to your hard work, the planet has become a Level 2 colony."]
+        ,["captain", "Every time your colony levels up, you can click on the 'Store' button to buy some upgrades for your ship."]
+        ,["lieutenant", "Oh, baby!"]
+      ]
+      dialogs instructions, ->
+        Crafty.e "Ship"
+        #TODO start level 2
 
     Crafty.scene "Instructions", ->
       console.p 'Crafty.scene Instructions'
