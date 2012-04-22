@@ -160,7 +160,8 @@ class window.Game
         @w = 35
         @h = 35
         @origin("center")
-        [x, y] = rand_location_not_near(40, Crafty.viewport.width - 40, 40, Crafty.viewport.height - 40, Crafty.viewport.width / 2 - 45 / 2, Crafty.viewport.height / 2 - 75 / 2 - 170)
+        [x, y] = rand_location_not_near(40, Crafty.viewport.width - 40, 40, Crafty.viewport.height - 40,
+          Crafty.viewport.width / 2 - 45 / 2, Crafty.viewport.height / 2 - 75 / 2 - 170)
         @attr
           x: x
           y: y
