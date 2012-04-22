@@ -87,6 +87,7 @@ class window.Game
     Crafty.audio.add "upgrade", ["sound/bu-the-tense-sheep.ogg", "sound/bu-the-tense-sheep.mp3"]
     Crafty.audio.add "ending", ["sound/bu-goats-and-seas.ogg", "sound/bu-goats-and-seas.mp3"]
     Crafty.audio.add "tiny", ["sound/Pickup_Coin4.ogg", "sound/Pickup_Coin4.mp3"]
+
     Crafty.c "Ship",
       init: ->
         console.p "Crafty.c Ship"
@@ -118,6 +119,7 @@ class window.Game
           @y = 0 if @y > Crafty.viewport.height
           @y = Crafty.viewport.height if @y < 0
           tick_tock()
+
     Crafty.c "Tiny",
       init: ->
         console.p "Crafty.c Tiny"
@@ -158,7 +160,10 @@ class window.Game
           
     Crafty.scene "Game", ->
       console.p 'Crafty.scene Game'
-      $("<div id='progress-wrap' style='display:none'><div id=level>Level 1</div><div id=progress><div id='progress-inner'></div></div></div>").appendTo("#planet")
+      $("<div id='progress-wrap' style='display:none'>
+           <div id=level>Level 1</div>
+           <div id=progress><div id='progress-inner'></div></div>
+         </div>").appendTo("#planet")
       progress_in_action = yes
       $("#progress-wrap").fadeIn 600
       $("#progress-inner").animate width: "100%", 300, ->
@@ -182,18 +187,20 @@ class window.Game
       #dialogs instructs, ->
       #  console.p "Done instructing"
       Crafty.scene "Game"
+
     Crafty.scene "End", ->
-      final_time = time
-      console.p 'Crafty.scene End', final_time
+      console.p 'Crafty.scene End'
+      final_score = Math.max(1000, 1900 - time) + rand_range(1, 50)
       $("#progress-wrap").fadeOut(400)
       Crafty.audio.play("ending", -1)
       instructs = [
         ["captain", "Well done, Lieutenant. With your help, the planet is now in tip-top shape!"]
-        ,["captain", "Your final score is... #{Math.max(1000, 1900 - final_time) + rand_range(1, 50)}! Congratulations!"]
+        ,["captain", "Your final score is... #{final_score}! Congratulations!"]
         ,["lieutenant", "Wahoo!! Yeah!"]
       ]
       dialogs instructs, ->
         console.p "Done"
+
     Crafty.scene "Loading", ->
       console.p 'Crafty.scene Loading'
       Crafty.load [
