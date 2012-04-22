@@ -1,3 +1,7 @@
+rand_range = (min, max, round = yes) ->
+  rand = min + Math.random()*(max - min)
+  return if round then Math.round(rand) else rand
+
 dialog = (who, text, done_fn, close = no) ->
   data =
     icon: "art/#{who}.png"
@@ -70,7 +74,7 @@ class window.Game
           x: 400
           y: 300
           is_hit: no
-        .bind "EnterFrame", ->
+        .bind "EnterFrame", (data) ->
           if @is_hit is yes
             @rotation += 30
             @frames_left -= 1
@@ -78,6 +82,11 @@ class window.Game
             @destroy() if @frames_left <= 0
           else
             @rotation += 1
+          if data.frame % 150 is 0
+            @tween(
+              x: @x + rand_range(-5, 5)
+              y: @y + rand_range(-5, 5)
+            , 150)
           collision = @hit "Ship"
           @after_hit(collision[0]) if collision and not @is_hit is yes
       after_hit: (ship) ->
@@ -89,7 +98,7 @@ class window.Game
     Crafty.scene "Game", ->
       console.p 'Crafty.scene Game'
       Crafty.e "Ship"
-      Crafty.e("2D, Canvas, Tiny, tiny_#{if yes then 'purple' else 'blue'}, Collision")
+      Crafty.e("2D, Canvas, Tiny, tiny_#{if yes then 'purple' else 'blue'}, Collision, Tween")
 
     Crafty.scene "Instructions", ->
       console.p 'Crafty.scene Instructions'
