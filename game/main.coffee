@@ -109,6 +109,29 @@ destroy_all_tiny = (done_fn) ->
   tiny_planets = []
   setTimeout done_fn, 200 if done_fn?
 
+inf_pulsate = (selector, ms = 500) ->
+  return if not $(selector)
+  if $(selector).hasClass("down")
+    $(selector).removeClass("down")
+    top = "+=10px"
+  else
+    $(selector).addClass("down")
+    top = "-=10px"
+  $(selector).animate top: top, ms, ->
+    inf_pulsate(selector, ms)
+
+toggle_store = (pulsate = no) ->
+  if $("#store > #store-button").length is 0
+    $("#store").animate right: "-300px", ->
+      $("#store").hide(0).html(tmpl("#store-button-tmpl")).css("right", "10px").fadeIn 300, ->
+        inf_pulsate "#store-button" if pulsate
+      $("#store-button").click -> toggle_store()
+  else
+    $("#store-button").fadeOut 100, ->
+      $("#store").hide(0).html(tmpl("#store-tmpl")).css("right", "-300px").show(0)
+      $("#store").animate right: "10px"
+      $("#done-store").click -> toggle_store()
+
 class window.Game
   @init: ->
     console.p "Game.init"
@@ -227,6 +250,7 @@ class window.Game
     
     Crafty.scene "Level2", ->
       console.p "Crafty.scene Level2"
+      toggle_store(yes)
       instructions = [
         ["captain", "Great work, soldier! Thanks to your hard work, the planet has become a Level 2 colony."]
         ,["captain", "Each time the colony levels up, you can click on the 'Store' button to buy upgrades for your ship."]
