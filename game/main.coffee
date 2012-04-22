@@ -100,7 +100,7 @@ class window.Game
           @after_hit(collision[0]) if collision and not @is_hit is yes
       after_hit: (ship) ->
         console.p "Ship hit Tiny planet!"
-        Crafty.audio.settings("tiny", volume: 0.3)
+        Crafty.audio.settings("tiny", volume: 0.1)
         Crafty.audio.play("tiny")
         @attr
           is_hit: true
