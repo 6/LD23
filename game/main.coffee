@@ -219,7 +219,7 @@ class window.Game
       console.p "Crafty.scene Level2"
       instructions = [
         ["captain", "Great work, soldier! Thanks to your hard work, the planet has become a Level 2 colony."]
-        ,["captain", "Every time your colony levels up, you can click on the 'Store' button to buy some upgrades for your ship."]
+        ,["captain", "Each time the colony levels up, you can click on the 'Store' button to buy upgrades for your ship."]
         ,["lieutenant", "Oh, baby!"]
       ]
       dialogs instructions, ->
