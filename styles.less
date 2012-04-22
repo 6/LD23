@@ -30,6 +30,35 @@ h1 {
   margin: -365/2px 0 0 -368/2px;
 }
 
+#progress-wrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -20/2 - 15px 0 0 -200/2px;
+  text-align:center;
+  #level {
+    width: 200px;
+    color: #fff;
+    font-weight: 200;
+    margin-bottom: 5px;
+    font-size: 14px;
+  }
+  #progress {
+    background: darken(#435367, 10%) url('art/progress-bg.png') repeat;
+    width: 200px - 4 * 2px;
+    height: 20px - 4 * 2px;
+    padding: 4px;
+    .border-radius(30px);
+    .box-shadow(inset 0 1px 4px rgba(0,0,0,0.4));
+    #progress-inner {
+      background: #558aaa url('art/progress-inner.png') repeat;
+      height: 12px;
+      width: 50%;
+      .border-radius(30px);
+    }
+  }
+}
+
 #dialog {
   color: #fff;
   position: fixed;
