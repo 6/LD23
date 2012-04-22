@@ -80,8 +80,8 @@ class window.Game
         @h = 35
         @origin("center")
         @attr
-          x: 400
-          y: 300
+          x: rand_range(40, Crafty.viewport.width - 40)
+          y: rand_range(40, Crafty.viewport.height   - 40)
           is_hit: no
         .bind "EnterFrame", (data) ->
           if @is_hit is yes
@@ -119,7 +119,9 @@ class window.Game
       Crafty.audio.settings("intro", volume: 0)
       #Crafty.audio.play("upgrade", -1) # TODO only show for upgrade screen
       Crafty.e "Ship"
-      Crafty.e("2D, Canvas, Tiny, tiny_#{if yes then 'purple' else 'blue'}, Collision, Tween")
+      for i in [0..10]
+        colors = {0: 'purple', 1: 'blue', 2: 'green', 3: 'red'}
+        Crafty.e("2D, Canvas, Tiny, tiny_#{colors[rand_range(0,3)]}, Collision, Tween")
 
     Crafty.scene "Instructions", ->
       console.p 'Crafty.scene Instructions'
