@@ -17,11 +17,11 @@ rand_range = (min, max, round = yes) ->
   
 rand_location_not_near = (min_x, max_x, min_y, max_y, not_min_x, not_min_y, not_max_x, not_max_y) ->
   if not not_max_x?
-    not_min_x -= 60
-    not_max_x = not_min_x + 120
+    not_min_x -= 80
+    not_max_x = not_min_x + 160
   if not not_max_y?
-    not_min_y -= 60
-    not_max_y = not_min_y + 120
+    not_min_y -= 80
+    not_max_y = not_min_y + 160
   rand_x = rand_range(min_x, max_x)
   rand_y = rand_range(min_y, max_y)
   if rand_x < not_min_x or rand_x > not_max_x or rand_y < not_min_y or rand_y > not_max_y
