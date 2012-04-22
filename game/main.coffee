@@ -1,5 +1,15 @@
 progress_queue = []
 progress_in_action = no
+time = 0
+temp_time = 1
+
+tick_tock = -> # run every frame
+  temp_time += 1
+  if temp_time % 100 == 0
+    temp_time = 1
+    time += 1
+  check_progress_queue()
+  check_game_done()
 
 rand_range = (min, max, round = yes) ->
   rand = min + Math.random()*(max - min)
@@ -58,6 +68,10 @@ add_progress = (amount) ->
     $("#progress-inner").animate width: "#{progress + progress_change}px", 100, ->
       progress_in_action = no
 
+check_game_done = ->
+  return if get_level() < 5
+  Crafty.scene "End"
+
 class window.Game
   @init: ->
     console.p "Game.init"
@@ -103,7 +117,7 @@ class window.Game
           @x = Crafty.viewport.width if @x < 0
           @y = 0 if @y > Crafty.viewport.height
           @y = Crafty.viewport.height if @y < 0
-          check_progress_queue()
+          tick_tock()
     Crafty.c "Tiny",
       init: ->
         console.p "Crafty.c Tiny"
@@ -153,7 +167,7 @@ class window.Game
       Crafty.audio.settings("intro", volume: 0)
       #Crafty.audio.play("upgrade", -1) # TODO only show for upgrade screen
       Crafty.e "Ship"
-      for i in [0..10]
+      for i in [0..100]
         colors = {0: 'purple', 1: 'blue', 2: 'green', 3: 'red'}
         Crafty.e("2D, Canvas, Tiny, tiny_#{colors[rand_range(0,3)]}, Collision, Tween")
 
@@ -168,6 +182,18 @@ class window.Game
       #dialogs instructs, ->
       #  console.p "Done instructing"
       Crafty.scene "Game"
+    Crafty.scene "End", ->
+      final_time = time
+      console.p 'Crafty.scene End', final_time
+      $("#progress-wrap").fadeOut(400)
+      Crafty.audio.play("ending", -1)
+      instructs = [
+        ["captain", "Well done, Lieutenant. With your help, the planet is now in tip-top shape!"]
+        ,["captain", "Your final score is... #{Math.max(1000, 2000 - final_time) + rand_range(1, 50)}! Congratulations!"]
+        ,["lieutenant", "Wahoo!! Yeah!"]
+      ]
+      dialogs instructs, ->
+        console.p "Done"
     Crafty.scene "Loading", ->
       console.p 'Crafty.scene Loading'
       Crafty.load ["art/planet.png", "art/progress-bg.png", "art/progress-inner.png", "art/spaceship.png", "art/tiny-planet.png", "sound/bu-strong-and-sweet.ogg", "sound/bu-strong-and-sweet.mp3", "sound/bu-the-tense-sheep.ogg", "sound/bu-the-tense-sheep.mp3", "sound/bu-goats-and-seas.ogg", "sound/bu-goats-and-seas.mp3", "sound/Message.ogg", "sound/Message.mp3", "sound/Pickup_Coin4.ogg", "sound/Pickup_Coin4.mp3"], ->
