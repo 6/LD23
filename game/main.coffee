@@ -13,7 +13,7 @@ tick_tock = -> # run every frame
     temp_time = 1
     time += 1
   check_progress_queue()
-  check_game_done()
+  Crafty.scene "End" if is_game_done()
   if get_level() >= 2 and not has_upgrade_instructions
     has_upgrade_instructions = yes
     destroy_all_tiny ->
@@ -98,12 +98,11 @@ add_progress = (amount) ->
       $("#progress-inner").animate width: "#{progress_change}px", 100, ->
         progress_in_action = no
   else
-    $("#progress-inner").animate width: "#{progress + progress_change}px", 100, ->
+    total = Math.max(0, progress + progress_change)
+    $("#progress-inner").animate width: "#{total}px", 100, ->
       progress_in_action = no
 
-check_game_done = ->
-  return if get_level() < 5
-  Crafty.scene "End"
+is_game_done = -> get_level() > 3
   
 destroy_all_tiny = (done_fn) ->
   for tiny in tiny_planets
@@ -134,6 +133,15 @@ toggle_store = (pulsate = no) ->
       $("#store").animate right: "10px"
       $("#done-store").click -> toggle_store()
 
+the_rest_of_the_game = (how_many = 1) ->
+  console.p "The Rest of the Game"
+  return if is_game_done()
+  for i in [1..how_many]
+    color = ['purple', 'blue', 'blue', 'purple','red', 'green','green'][rand_range(0,7)]
+    continue if not color?
+    tiny_planets.push Crafty.e("2D, Canvas, Tiny, tiny_#{color}, Collision, Tween").attr(color: color, destroy_after: rand_range(100, 700), start_off: yes)
+  setTimeout(the_rest_of_the_game, rand_range(500, 1000))
+
 class window.Game
   @init: ->
     console.p "Game.init"
@@ -153,6 +161,7 @@ class window.Game
     Crafty.audio.add "upgrade", ["sound/bu-the-tense-sheep.ogg", "sound/bu-the-tense-sheep.mp3"]
     Crafty.audio.add "ending", ["sound/bu-goats-and-seas.ogg", "sound/bu-goats-and-seas.mp3"]
     Crafty.audio.add "tiny", ["sound/Pickup_Coin4.ogg", "sound/Pickup_Coin4.mp3"]
+    Crafty.audio.add "red", ["sound/Message.ogg", "sound/Message.mp3"]
 
     Crafty.c "Ship",
       init: ->
@@ -195,17 +204,27 @@ class window.Game
         @w = 35
         @h = 35
         @origin("center")
-        [x, y] = rand_location_not_near(40, Crafty.viewport.width - 40, 40, Crafty.viewport.height - 40,
-          Crafty.viewport.width / 2 - 45 / 2, Crafty.viewport.height / 2 - 75 / 2 - 170)
         @attr
-          x: x
-          y: y
+          x: 0
+          y: 0
           is_hit: no
           first_frame: yes
           rotation_speed: rand_range(1, 3)
         .bind "EnterFrame", (data) ->
           if @first_frame is yes
             @first_frame = no
+            if @start_off is yes
+              if rand_range(0, 1) is 1
+                x = rand_range(0, Crafty.viewport.width)
+                y = 0
+              else
+                x = 0
+                y = rand_range(0, Crafty.viewport.height)
+            else
+              [x, y] = rand_location_not_near(40, Crafty.viewport.width - 40, 40, Crafty.viewport.height - 40,
+              Crafty.viewport.width / 2 - 45 / 2, Crafty.viewport.height / 2 - 75 / 2 - 170)
+            @x = x
+            @y = y
             ranges =
               purple: [-1, 1]
               blue: [-2, 2]
@@ -220,6 +239,8 @@ class window.Game
             @destroy() if @frames_left <= 0
           else
             @rotation += @rotation_speed
+            @destroy_after -= 1
+            @after_hit() if @destroy_after <= 0
           @x += @speed_x
           @y += @speed_y
           @x = 0 if @x > Crafty.viewport.width
@@ -231,9 +252,14 @@ class window.Game
       after_hit: (ship) ->
         if ship?
           console.p "Ship hit Tiny planet!"
-          Crafty.audio.settings("tiny", volume: 0.1)
-          Crafty.audio.play("tiny")
-          enqueue_progress(10)
+          if @color is "red"
+            Crafty.audio.settings("red", volume: 0.3)
+            Crafty.audio.play("red")
+            enqueue_progress(-15)
+          else
+            Crafty.audio.settings("tiny", volume: 0.1)
+            Crafty.audio.play("tiny")
+            enqueue_progress({"green":30, "blue": 20, "purple": 10}[@color])
         @attr
           is_hit: true
           frames_left: 30
@@ -253,22 +279,26 @@ class window.Game
       #Crafty.audio.play("upgrade", -1) # TODO only show for upgrade screen
       ship = Crafty.e("Ship").attr t: spaceship_type
       for i in [0..14]
-        color = {0: 'purple', 1: 'blue', 2: 'green', 3: 'red'}[rand_range(0,3)]
+        color = {0: 'purple', 1: 'blue', 2: 'green'}[rand_range(0,2)]
         tiny_planets.push Crafty.e("2D, Canvas, Tiny, tiny_#{color}, Collision, Tween")
           .attr color: color
     
     Crafty.scene "Level2", ->
       console.p "Crafty.scene Level2"
+      Crafty.audio.play("upgrade", -1)
       #toggle_store(yes)
       instructions = [
         ["captain", "Great work, soldier! Thanks to your hard work, the planet has become a Level 2 colony."]
         #,["captain", "Each time the colony levels up, you can click on the 'Store' button to buy upgrades for your ship."]
         ,["lieutenant", "Oh, baby!"]
+        ,["captain", "Wait! I forgot to mention.."]
+        ,["captain", "You may come across red tiny planets. Avoid these at all costs!"]
+        ,["captain", "These red tiny planets will damage your ship and cost the colony."] 
       ]
       dialogs instructions, ->
-        ship = Crafty.e("Ship").attr t: spaceship_type
-           
-        #TODO start level 2
+        ship = Crafty.e("Ship").attr(t: spaceship_type)
+        fade_audio "upgrade"
+        the_rest_of_the_game(5)
 
     Crafty.scene "Instructions", ->
       console.p 'Crafty.scene Instructions'
