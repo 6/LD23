@@ -137,7 +137,7 @@ the_rest_of_the_game = (how_many = 1) ->
   console.p "The Rest of the Game"
   return if is_game_done()
   for i in [1..how_many]
-    color = ['purple', 'blue', 'blue', 'purple','red', 'green','green'][rand_range(0,7)]
+    color = ['purple', 'blue', 'blue', 'purple','red', 'red', 'green','green'][rand_range(0,8)]
     continue if not color?
     tiny_planets.push Crafty.e("2D, Canvas, Tiny, tiny_#{color}, Collision, Tween").attr(color: color, destroy_after: rand_range(100, 700), start_off: yes)
   setTimeout(the_rest_of_the_game, rand_range(500, 1000))
