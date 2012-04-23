@@ -4,6 +4,8 @@ time = 0
 temp_time = 1
 has_upgrade_instructions = no
 tiny_planets = []
+spaceship_type = '2'
+ship = null
 
 tick_tock = -> # run every frame
   temp_time += 1
@@ -138,6 +140,10 @@ class window.Game
     Crafty.init()
     Crafty.sprite "art/spaceship.png",
       spaceship: [0, 0, 45, 75]
+    #Crafty.sprite "art/spaceship2.png",
+    #  spaceship2: [0, 0, 45, 75]
+    #Crafty.sprite "art/spaceship3.png",
+    #  spaceship3: [0, 0, 45, 75]
     Crafty.sprite 35, "art/tiny-planet.png",
       tiny_purple: [0, 0]
       tiny_blue: [1, 0]
@@ -157,15 +163,18 @@ class window.Game
             x: Crafty.viewport.width / 2 - 45 / 2
             y: Crafty.viewport.height / 2 - 75 / 2 - 170
             speed: 0
-            speed_cap: 15
             rotation: 0
-            rotation_cap: 6
-            handling: 0.4
-            acceleration: 0.25
             decay: 0.99
+            first_frame: yes
         @w = 45
         @h = 75
         @bind "EnterFrame", ->
+          if @first_frame is yes
+            @first_frame = no
+            @speed_cap = {'1': 5, '2': 10, '3': 20}[@t]
+            @rotation_cap = {'1': 4, '2': 5, '3': 6}[@t]
+            @handling = {'1': 0.4, '2': 0.5, '3': 0.6}[@t]
+            @acceleration = {'1': 0.15, '2': 0.2, '3': 0.25}[@t]
           @speed += @acceleration if @isDown(Crafty.keys.UP_ARROW)
           @speed -= @acceleration if @isDown(Crafty.keys.DOWN_ARROW)
           @rotation += Math.min(@rotation_cap, @speed * @handling + 2) if @isDown(Crafty.keys.RIGHT_ARROW)
@@ -242,7 +251,7 @@ class window.Game
           progress_in_action = no
       Crafty.audio.settings("intro", volume: 0)
       #Crafty.audio.play("upgrade", -1) # TODO only show for upgrade screen
-      Crafty.e "Ship"
+      ship = Crafty.e("Ship").attr t: spaceship_type
       for i in [0..14]
         color = {0: 'purple', 1: 'blue', 2: 'green', 3: 'red'}[rand_range(0,3)]
         tiny_planets.push Crafty.e("2D, Canvas, Tiny, tiny_#{color}, Collision, Tween")
@@ -250,19 +259,20 @@ class window.Game
     
     Crafty.scene "Level2", ->
       console.p "Crafty.scene Level2"
-      toggle_store(yes)
+      #toggle_store(yes)
       instructions = [
         ["captain", "Great work, soldier! Thanks to your hard work, the planet has become a Level 2 colony."]
-        ,["captain", "Each time the colony levels up, you can click on the 'Store' button to buy upgrades for your ship."]
+        #,["captain", "Each time the colony levels up, you can click on the 'Store' button to buy upgrades for your ship."]
         ,["lieutenant", "Oh, baby!"]
       ]
       dialogs instructions, ->
-        Crafty.e "Ship"
+        ship = Crafty.e("Ship").attr t: spaceship_type
+           
         #TODO start level 2
 
     Crafty.scene "Instructions", ->
       console.p 'Crafty.scene Instructions'
-      #Crafty.audio.play("intro", -1)
+      Crafty.audio.play("intro", -1)
       instructs = [
         ["captain", "Listen up, Lieutenant! You're on a mission to help us colonize this new planet."]
         ,["captain", "Use the rocket ship to collect tiny planets. You can control the ship with your arrow keys."]
@@ -297,7 +307,7 @@ class window.Game
       Crafty.load [
         "art/planet.png",
         "art/progress-bg.png", "art/progress-inner.png",
-        "art/spaceship.png",
+        "art/spaceship.png", #"art/spaceship2.png", "art/spaceship3.png",
         "art/tiny-planet.png",
         "sound/bu-strong-and-sweet.ogg", "sound/bu-strong-and-sweet.mp3",
         "sound/bu-the-tense-sheep.ogg", "sound/bu-the-tense-sheep.mp3",
