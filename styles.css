@@ -1,0 +1,152 @@
+/*
+  Bootstrap v1.1
+  Variables and mixins to bootstrap any new web development project.
+*/
+/* Variables
+-------------------------------------------------- */
+/* Mixins
+-------------------------------------------------- */
+.clearfix {
+  zoom: 1;
+}
+.clearfix:after {
+  display: block;
+  visibility: hidden;
+  height: 0;
+  clear: both;
+  content: ".";
+}
+html,
+body {
+  overflow: hidden;
+}
+#cr-stage {
+  background: #222222 url('art/stars.png') repeat;
+}
+#logo {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+}
+#end {
+  width: 300px;
+  height: 200px;
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: -40px 0 0 -150px;
+  color: #fff;
+}
+#end h2 {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+#end a {
+  color: #79f;
+  font-size: 28px;
+  text-decoration: none;
+}
+#end a:hover {
+  color: #fff;
+}
+#planet {
+  width: 368px;
+  height: 365px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: -182.5px 0 0 -184px;
+}
+#progress-wrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -25px 0 0 -100px;
+  text-align: center;
+}
+#progress-wrap #level {
+  width: 200px;
+  color: #fff;
+  font-weight: 200;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+#progress-wrap #progress {
+  background: #2f3a48 url('art/progress-bg.png') repeat;
+  width: 192px;
+  height: 12px;
+  padding: 4px;
+  -moz-border-radius: 30px;
+  border-radius: 30px;
+  -webkit-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+#progress-wrap #progress #progress-inner {
+  background: #558aaa url('art/progress-inner.png') repeat;
+  height: 12px;
+  width: 40%;
+  -moz-border-radius: 30px;
+  border-radius: 30px;
+}
+#dialog {
+  color: #fff;
+  position: fixed;
+  bottom: -120px;
+  margin: 0;
+  padding: 0;
+  width: 450px;
+  left: 15px;
+  background: rgba(15, 10, 30, 0.6);
+  padding: 10px 10px 6px;
+}
+#dialog #who {
+  margin: 0;
+  padding: 0;
+  border: 4px solid #245;
+}
+#dialog #text {
+  position: absolute;
+  left: 110px;
+  top: 0;
+  margin: 10px;
+}
+#dialog #confirm {
+  background: #244;
+  border: 2px solid #355;
+  color: #ccc;
+  font-weight: bold;
+  position: absolute;
+  padding: 5px 10px;
+  right: 7px;
+  bottom: 7px;
+}
+#dialog #confirm:hover {
+  background: #355;
+  border-color: #466;
+  color: #fff;
+}
+#store {
+  color: #fff;
+  position: fixed;
+  top: 0;
+  right: 0;
+  background: rgba(15, 10, 30, 0.6);
+  padding: 10px;
+}
+#store #store-button {
+  position: absolute;
+  right: 5px;
+  top: 15px;
+  background: #27b;
+  border: 2px solid #38c;
+  color: #ddd;
+  font-size: 28px;
+  padding: 5px 10px;
+}
+#store #store-button:hover {
+  background: #38c;
+  border-color: #49d;
+  color: #fff;
+}
